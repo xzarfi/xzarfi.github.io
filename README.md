@@ -32,11 +32,6 @@ A browser-based combat training game that replicates Chivalry 2's mouse control 
 - **Directional Attacks**: Aim with mouse, attack in that direction
 - **Different Damage Types**: Each attack type has different damage values
 
-### Training Dummies
-- **Wooden Dummy**: Basic training target
-- **Metal Dummy**: More durable target
-- **Stone Dummy**: Hardest target to destroy
-- **Auto-Respawn**: Dummies respawn after 3 seconds when destroyed
 
 ### Visual Effects
 - **Weapon Trails**: Visual feedback for attacks
