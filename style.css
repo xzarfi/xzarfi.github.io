@@ -15,8 +15,15 @@ body {
 }
 
 @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .game-container {
@@ -29,11 +36,23 @@ body {
     justify-content: center;
 }
 
+/* The wrapper we added around the canvas + top HUD */
+.canvas-wrap {
+    position: relative;
+    display: inline-block;
+    /* visually cap at 1200x800 while still allowing downscale */
+    max-width: 1200px;
+    max-height: 800px;
+}
+
 #gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
     border: 4px solid #8b4513;
     border-radius: 15px;
     background: linear-gradient(to bottom, #87ceeb, #90ee90);
-    box-shadow: 
+    box-shadow:
         0 0 30px rgba(0, 0, 0, 0.6),
         0 0 60px rgba(139, 69, 19, 0.3),
         inset 0 0 20px rgba(255, 255, 255, 0.1);
@@ -49,7 +68,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
+    background:
         radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
     pointer-events: none;
@@ -67,34 +86,57 @@ body {
 }
 
 .score-display {
-    display: flex;
-    gap: 20px;
-}
-
-.score-item {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
+    background: linear-gradient(135deg, rgba(0, 0, 0, .9), rgba(20, 20, 20, .9));
     border: 2px solid #8b4513;
     border-radius: 10px;
-    padding: 8px 15px;
+    padding: 1vh 1vw;
+    /* scale with screen */
+    display: flex;
+    justify-content: space-around;
+    /* spread stats evenly */
+    flex-wrap: nowrap;
+    /* allow wrapping on smaller screens */
+    gap: 1vw;
+    width: 90%;
+    /* relative width */
+    max-width: 500px;
+    /* don’t stretch too wide */
+}
+
+.score-display .stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
+    flex: 1 1 0;
+    /* prevent collapsing too small */
+    flex: 1;
+    text-align: center;
+    width: 25%;
 }
 
-.score-label {
-    font-size: 10px;
+.score-display .score-label {
+    font-size: clamp(0.6rem, 1vw, .6rem);
+    /* responsive font size */
     color: #f39c12;
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.score-value {
-    font-size: 18px;
+.score-display .score-value {
+    font-size: clamp(.5rem, 1.5vw, 1rem);
+    /* responsive font size */
     color: #fff;
     font-weight: bold;
+    margin-top: 0.3em;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* optional separator between stat blocks */
+.score-display .stat+.stat {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 1vw;
+    /* scales with screen size */
 }
 
 .bottom-hud {
@@ -107,11 +149,35 @@ body {
 
 .health-stamina-container {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    /* allows wrap on smaller screens */
 }
 
-.health-bar, .stamina-bar {
+/* Ensure the order stays Health → Indicator → Stamina, even when wrapped */
+.health-bar {
+    order: 1;
+}
+
+.attack-indicator {
+    order: 2;
+}
+
+.stamina-bar {
+    order: 3;
+}
+
+/* (Optional) make bars flexible so the indicator fits comfortably */
+.health-bar,
+.stamina-bar {
+    width: clamp(200px, 22vw, 250px);
+}
+
+
+.health-bar,
+.stamina-bar {
     width: 250px;
     height: 30px;
     background: rgba(0, 0, 0, 0.8);
@@ -137,7 +203,8 @@ body {
     border-radius: 13px;
 }
 
-.health-text, .stamina-text {
+.health-text,
+.stamina-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -154,12 +221,13 @@ body {
     padding: 12px 25px;
     font-weight: bold;
     text-align: center;
-    min-width: 140px;
     transition: all 0.3s ease;
-    box-shadow: 
+    box-shadow:
         0 0 20px rgba(139, 69, 19, 0.4),
         inset 0 0 10px rgba(255, 255, 255, 0.1);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    padding: 8px 16px;
+    min-width: 120px;
 }
 
 .attack-indicator.slashing {
@@ -201,7 +269,7 @@ body {
     border-radius: 15px;
     padding: 20px;
     min-width: 220px;
-    box-shadow: 
+    box-shadow:
         0 0 30px rgba(139, 69, 19, 0.4),
         inset 0 0 15px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
@@ -228,7 +296,7 @@ body {
     font-weight: bold;
     min-width: 70px;
     text-align: center;
-    box-shadow: 
+    box-shadow:
         0 2px 4px rgba(0, 0, 0, 0.3),
         inset 0 1px 2px rgba(255, 255, 255, 0.2);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -253,6 +321,7 @@ body {
         opacity: 1;
         transform: scale(0.5);
     }
+
     100% {
         opacity: 0;
         transform: scale(2);
@@ -274,6 +343,7 @@ body {
         opacity: 1;
         transform: scale(1);
     }
+
     100% {
         opacity: 0;
         transform: scale(0.5);
@@ -286,7 +356,17 @@ body {
 }
 
 @keyframes screenShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }

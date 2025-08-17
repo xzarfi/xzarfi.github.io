@@ -1,48 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chivalry 2 Combat Trainer</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+
     <div class="game-container">
-        <!-- Top HUD -->
-        <div class="top-hud">
-            <div class="score-display">
-                <div class="score-item">
-                    <span class="score-label">KILLS:</span>
-                    <span class="score-value" id="killsDisplay">0</span>
+        <div class="canvas-wrap">
+            <!-- Top HUD -->
+            <div class="top-hud">
+                <div class="score-display">
+                    <div class="stat">
+                        <span class="score-label">KILLS</span>
+                        <span class="score-value" id="killsDisplay">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="score-label">DEATHS</span>
+                        <span class="score-value" id="deathsDisplay">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="score-label">K/D</span>
+                        <span class="score-value" id="kdDisplay">0.0</span>
+                    </div>
+                    <div class="stat" id="difficultyContainer">
+                        <span class="score-label">DIFFICULTY</span>
+                        <span class="score-value" id="difficultyDisplay">1</span>
+                    </div>
                 </div>
-                <div class="score-item">
-                    <span class="score-label">DEATHS:</span>
-                    <span class="score-value" id="deathsDisplay">0</span>
-                </div>
-                <div class="score-item" id="difficultyContainer" style="display: none;">
-                    <span class="score-label">DIFFICULTY:</span>
-                    <span class="score-value" id="difficultyDisplay">1</span>
+
+            </div>
+            <canvas id="gameCanvas" width="1200" height="800"></canvas>
+            <div class="bottom-hud">
+                <div class="health-stamina-container">
+                    <div class="health-bar">
+                        <div class="health-fill" id="healthFill"></div>
+                        <span class="health-text">150</span>
+                    </div>
+                    <div class="attack-indicator" id="attackIndicator">Ready</div>
+                    <div class="stamina-bar">
+                        <div class="stamina-fill" id="staminaFill"></div>
+                        <span class="stamina-text">100</span>
+                    </div>
                 </div>
             </div>
-            <div class="attack-indicator" id="attackIndicator">Ready</div>
+
         </div>
-        
-        <canvas id="gameCanvas" width="1200" height="800"></canvas>
-        
+
         <!-- Bottom HUD -->
-        <div class="bottom-hud">
-            <div class="health-stamina-container">
-                <div class="health-bar">
-                    <div class="health-fill" id="healthFill"></div>
-                    <span class="health-text">150</span>
-                </div>
-                <div class="stamina-bar">
-                    <div class="stamina-fill" id="staminaFill"></div>
-                    <span class="stamina-text">100</span>
-                </div>
-            </div>
-        </div>
-        
+
+
         <div class="controls-info">
             <h3>Controls:</h3>
             <div class="control-row">
@@ -71,7 +83,9 @@
             </div>
         </div>
     </div>
-    
+
     <script src="game.js"></script>
+    <script src="resizeCanvas.js"></script>
 </body>
+
 </html>
