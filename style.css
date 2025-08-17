@@ -260,19 +260,52 @@ body {
     transform: scale(1.1);
 }
 
-.controls-info {
+.controls-dropdown {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
+    z-index: 10;
+}
+
+.controls-toggle-btn {
+    background: #f39c12;
+    color: #fff;
+    border: none;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.controls-toggle-btn:hover {
+    background: #e67e22;
+}
+
+.controls-info.controls-dropdown-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.97), rgba(20, 20, 20, 0.97));
     border: 3px solid #8b4513;
-    border-radius: 15px;
+    border-radius: 0 0 15px 15px;
     padding: 20px;
     min-width: 220px;
     box-shadow:
         0 0 30px rgba(139, 69, 19, 0.4),
         inset 0 0 15px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
+    animation: dropdownFadeIn 0.2s;
+}
+.controls-info.controls-dropdown-panel.open {
+    display: block;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .controls-info h3 {

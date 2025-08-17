@@ -33,7 +33,37 @@
                         <span class="score-value" id="difficultyDisplay">1</span>
                     </div>
                 </div>
-
+            </div>
+            <!-- Controls Dropdown Button and Panel -->
+            <div class="controls-dropdown">
+                <button id="controlsToggleBtn" class="controls-toggle-btn">Controls</button>
+                <div class="controls-info controls-dropdown-panel" id="controlsDropdownPanel">
+                    <h3>Controls:</h3>
+                    <div class="control-row">
+                        <span class="control-key">LMB</span>
+                        <span class="control-action">→ Slash</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-key">Scroll Down</span>
+                        <span class="control-action">→ Overhead</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-key">MB4 (Back)</span>
+                        <span class="control-action">→ Feint</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-key">MB5 (Front)</span>
+                        <span class="control-action">→ Stab</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-key">RMB</span>
+                        <span class="control-action">→ Block</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-key">WASD</span>
+                        <span class="control-action">→ Move</span>
+                    </div>
+                </div>
             </div>
             <canvas id="gameCanvas" width="1200" height="800"></canvas>
             <div class="bottom-hud">
@@ -52,40 +82,25 @@
 
         </div>
 
-        <!-- Bottom HUD -->
-
-
-        <div class="controls-info">
-            <h3>Controls:</h3>
-            <div class="control-row">
-                <span class="control-key">LMB</span>
-                <span class="control-action">→ Slash</span>
-            </div>
-            <div class="control-row">
-                <span class="control-key">Scroll Down</span>
-                <span class="control-action">→ Overhead</span>
-            </div>
-            <div class="control-row">
-                <span class="control-key">MB4 (Back)</span>
-                <span class="control-action">→ Feint</span>
-            </div>
-            <div class="control-row">
-                <span class="control-key">MB5 (Front)</span>
-                <span class="control-action">→ Stab</span>
-            </div>
-            <div class="control-row">
-                <span class="control-key">RMB</span>
-                <span class="control-action">→ Block</span>
-            </div>
-            <div class="control-row">
-                <span class="control-key">WASD</span>
-                <span class="control-action">→ Move</span>
-            </div>
-        </div>
+    <!-- Controls moved inside .canvas-wrap as dropdown -->
     </div>
 
     <script src="game.js"></script>
     <script src="resizeCanvas.js"></script>
+    <script>
+    // Controls dropdown toggle logic
+    const controlsBtn = document.getElementById('controlsToggleBtn');
+    const controlsPanel = document.getElementById('controlsDropdownPanel');
+    controlsBtn.addEventListener('click', () => {
+        controlsPanel.classList.toggle('open');
+    });
+    // Optional: close dropdown if click outside
+    document.addEventListener('click', (e) => {
+        if (!controlsPanel.contains(e.target) && e.target !== controlsBtn) {
+            controlsPanel.classList.remove('open');
+        }
+    });
+    </script>
 </body>
 
 </html>
