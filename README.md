@@ -1,21 +1,22 @@
 # Chivalry 2 Combat Trainer
 
-A browser-based combat training game that replicates Chivalry 2's mouse control scheme for practicing your combat skills while waiting for servers to come back up.
+A browser-based 1v1 combat trainer that replicates Chivalry 2's mouse control scheme and combat mechanics for practicing your skills.
 
 ## How to Play
 
-1. Open `index.html` in your web browser
-2. The game will start automatically
-3. Use the mouse controls to attack training dummies
-4. Practice different attack types and combos
+1. Open `index.html` in your web browser.
+2. Click **START TRAINING** to begin.
+3. Use the mouse and keyboard controls to fight the AI opponent.
+4. Track your kills and deaths, and use the **RESTART** button to reset.
 
 ## Controls
 
 ### Mouse Controls (Chivalry 2 Style)
 - **Left Mouse Button (LMB)** → Slash (Main attack)
 - **Scroll Wheel Down** → Overhead (Vertical attack)
-- **Mouse Button 4 (MB4) - Back Thumb** → Feint (Cancel attack)
-- **Mouse Button 5 (MB5) - Front Thumb** → Stab (Thrust attack)
+- **Mouse Button 4 (Back Thumb)** → Feint (Cancel attack)
+- **Mouse Button 5 (Front Thumb)** → Stab (Thrust attack)
+- **Right Mouse Button (RMB)** → Block
 
 ### Movement
 - **W** → Move forward
@@ -25,44 +26,40 @@ A browser-based combat training game that replicates Chivalry 2's mouse control 
 
 ## Game Features
 
-### Combat System
-- **Stamina Management**: Each attack costs stamina
-- **Attack Recovery**: Cooldown between attacks
-- **Feint System**: Cancel attacks with MB5
-- **Directional Attacks**: Aim with mouse, attack in that direction
-- **Different Damage Types**: Each attack type has different damage values
+- **1v1 AI Combat**: Fight against a moving, attacking, and blocking AI opponent.
+- **Stamina & Health Management**: Attacks and blocks consume stamina; health and stamina bars are displayed.
+- **Attack Types**: Slash, Stab, Overhead, Feint, and Block, each with unique damage, stamina cost, and angles.
+- **Kill/Death Tracking**: See your kills and deaths during the session.
+- **Respawn System**: Both you and the AI respawn after death.
+- **Combo Counter**: Track consecutive hits within a time window.
+- **Visual Effects**: Weapon trails, damage numbers, death effects, and screen shake.
+- **Attack Indicators**: Shows your current attack state.
+- **Start/Restart Buttons**: Start or reset your training session.
 
+## Attack Types & Stats (as in code)
 
-### Visual Effects
-- **Weapon Trails**: Visual feedback for attacks
-- **Damage Numbers**: Shows damage dealt
-- **Screen Shake**: Impact feedback
-- **Attack Indicators**: Shows current attack type
-- **Health/Stamina Bars**: Real-time status display
-
-## Attack Types & Stats
-
-| Attack | Damage | Stamina Cost | Range | Angle |
-|--------|--------|--------------|-------|-------|
-| Slash | 25 | 15 | 120 | ±45° |
-| Overhead | 35 | 25 | 110 | ±30° |
-| Stab | 30 | 20 | 100 | ±15° |
-| Feint | 0 | 5 | - | - |
+| Attack   | Damage | Stamina Cost | Range | Angle         |
+|----------|--------|--------------|-------|--------------|
+| Slash    | 85     | 25           | 120   | ±45°         |
+| Overhead | 105    | 35           | 110   | ±30°         |
+| Stab     | 95     | 30           | 100   | ±15°         |
+| Feint    | 0      | 10           | -     | -            |
+| Block    | 0      | 15           | -     | ±60° (slash) |
 
 ## Tips for Practice
 
-1. **Master the Feint**: Use MB5 to cancel attacks and bait opponents
-2. **Learn Attack Angles**: Each attack has different directional coverage
-3. **Manage Stamina**: Don't spam attacks, let stamina regenerate
-4. **Practice Movement**: Use WASD to position yourself for optimal attacks
-5. **Aim Carefully**: Mouse position determines attack direction
+1. **Master the Feint**: Use MB4 to cancel attacks and bait the AI.
+2. **Learn Attack Angles**: Each attack has different directional coverage.
+3. **Manage Stamina**: Don't spam attacks; let stamina regenerate.
+4. **Practice Movement**: Use WASD to position yourself.
+5. **Watch the AI**: The AI will attack, block, and reposition.
 
 ## Technical Details
 
-- Built with vanilla JavaScript and HTML5 Canvas
-- No external dependencies required
-- Runs entirely in the browser
-- Responsive design with medieval-themed UI
+- Built with vanilla JavaScript and HTML5 Canvas.
+- No external dependencies required.
+- Runs entirely in the browser.
+- Responsive design with medieval-themed UI.
 
 ## File Structure
 
