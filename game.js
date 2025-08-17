@@ -680,6 +680,14 @@ class ChivalryCombatGame {
     updateAIMovement() {
         if (!this.aiPlayer.isAlive) return;
 
+        // If player is dead or invulnerable, AI idles (does not track or attack)
+        if (this.gameState.isDead || this.gameState.respawnInvulnerability > 0) {
+            // Idle: stand still, don't attack, don't track
+            this.aiPlayer.targetPos = { x: this.aiPlayer.x, y: this.aiPlayer.y };
+            // Optionally: add patrol or random walk here
+            return;
+        }
+
         const currentTime = Date.now();
         const distanceToPlayer = Math.sqrt(
             Math.pow(this.gameState.playerPos.x - this.aiPlayer.x, 2) +
