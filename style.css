@@ -291,16 +291,54 @@ body {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.97), rgba(20, 20, 20, 0.97));
     border: 3px solid #8b4513;
     border-radius: 0 0 15px 15px;
-    padding: 20px;
+    padding: 1.2em 1.5em 1.2em 1.5em;
     min-width: 220px;
+    max-width: 320px;
+    width: 28vw;
     box-shadow:
         0 0 30px rgba(139, 69, 19, 0.4),
         inset 0 0 15px rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(5px);
     animation: dropdownFadeIn 0.2s;
+    box-sizing: border-box;
 }
 .controls-info.controls-dropdown-panel.open {
     display: block;
+}
+
+.controls-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+}
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    font-size: 1.05em;
+    width: 100%;
+}
+.control-key {
+    background: #f39c12;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.3em 0.9em;
+    font-weight: bold;
+    font-size: 1em;
+    min-width: 80px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    margin-right: 0.5em;
+    flex-shrink: 0;
+}
+.control-action {
+    color: #fff;
+    font-size: 1em;
+    text-align: left;
+    flex: 1;
+    font-weight: 500;
 }
 
 @keyframes dropdownFadeIn {
