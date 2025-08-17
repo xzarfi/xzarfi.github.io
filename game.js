@@ -12,7 +12,7 @@ class ChivalryCombatGame {
         
         // Game state
         this.gameState = {
-            health: 150,
+            health: 200,
             stamina: 100,
             currentAttack: null,
             attackCooldown: 0,
