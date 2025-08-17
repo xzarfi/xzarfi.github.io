@@ -272,8 +272,8 @@ class ChivalryCombatGame {
         restartButton.className = 'restart-button';
         restartButton.style.cssText = `
             position: absolute;
-            bottom: 24px;
-            right: 24px;
+            top: 20px;
+            right: 140px;
             padding: 12px 28px;
             font-size: 18px;
             font-weight: bold;
@@ -282,7 +282,7 @@ class ChivalryCombatGame {
             border: 2px solid #8B0000;
             border-radius: 10px;
             cursor: pointer;
-            z-index: 100;
+            z-index: 101;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
         `;
