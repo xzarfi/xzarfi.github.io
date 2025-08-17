@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chivalry 2 Combat Trainer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Top HUD -->
+        <div class="top-hud">
+            <div class="score-display">
+                <div class="score-item">
+                    <span class="score-label">KILLS:</span>
+                    <span class="score-value" id="killsDisplay">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">DEATHS:</span>
+                    <span class="score-value" id="deathsDisplay">0</span>
+                </div>
+                <div class="score-item" id="difficultyContainer" style="display: none;">
+                    <span class="score-label">DIFFICULTY:</span>
+                    <span class="score-value" id="difficultyDisplay">1</span>
+                </div>
+            </div>
+            <div class="attack-indicator" id="attackIndicator">Ready</div>
+        </div>
+        
+        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        
+        <!-- Bottom HUD -->
+        <div class="bottom-hud">
+            <div class="health-stamina-container">
+                <div class="health-bar">
+                    <div class="health-fill" id="healthFill"></div>
+                    <span class="health-text">150</span>
+                </div>
+                <div class="stamina-bar">
+                    <div class="stamina-fill" id="staminaFill"></div>
+                    <span class="stamina-text">100</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls-info">
+            <h3>Controls:</h3>
+            <div class="control-row">
+                <span class="control-key">LMB</span>
+                <span class="control-action">→ Slash</span>
+            </div>
+            <div class="control-row">
+                <span class="control-key">Scroll Down</span>
+                <span class="control-action">→ Overhead</span>
+            </div>
+            <div class="control-row">
+                <span class="control-key">MB4 (Back)</span>
+                <span class="control-action">→ Feint</span>
+            </div>
+            <div class="control-row">
+                <span class="control-key">MB5 (Front)</span>
+                <span class="control-action">→ Stab</span>
+            </div>
+            <div class="control-row">
+                <span class="control-key">RMB</span>
+                <span class="control-action">→ Block</span>
+            </div>
+            <div class="control-row">
+                <span class="control-key">WASD</span>
+                <span class="control-action">→ Move</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
