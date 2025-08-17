@@ -671,7 +671,7 @@ class ChivalryCombatGame {
 
         // Keep player in bounds
         this.gameState.playerPos.x = Math.max(50, Math.min(this.W - 50, this.gameState.playerPos.x));
-        this.gameState.playerPos.y = Math.max(50, Math.min(this.H - 50, this.gameState.playerPos.y));
+        this.gameState.playerPos.y = Math.max(50 + this.H*0.6, Math.min(this.H - 50, this.gameState.playerPos.y));
 
         // Update weapon angle
         this.gameState.weaponAngle = Math.atan2(
