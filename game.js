@@ -279,8 +279,8 @@ class ChivalryCombatGame {
     }
     // --- WIN CONDITION ---
     checkVictory() {
-        // Player wins if 5 kills without dying
-        if (this.gameState.kills >= 5 && this.gameState.deaths === 0 && !this.victoryShown) {
+        // Player wins if 3 kills without dying
+        if (this.killsInARow >= 3 && !this.victoryShown) {
             this.showVictory();
         }
     }
@@ -458,6 +458,11 @@ class ChivalryCombatGame {
             this.aiPlayer.isAlive = false;
             this.aiPlayer.health = 0;
             this.gameState.kills++;
+            // Track kills in a row for victory
+            if (typeof this.killsInARow !== 'number') this.killsInARow = 0;
+            this.killsInARow++;
+            // Refill player health after each kill
+            this.gameState.health = 150;
             this.addDeathEffect(this.aiPlayer.x, this.aiPlayer.y, 'ai');
             this.checkVictory();
         }
@@ -558,6 +563,8 @@ class ChivalryCombatGame {
         this.gameState.playerPos.x = respawnX;
         this.gameState.playerPos.y = respawnY;
         this.gameState.respawnInvulnerability = 2000; // 2 seconds of invulnerability
+        // Reset kills in a row on death
+        this.killsInARow = 0;
         this.updateHUD();
     }
 
@@ -829,6 +836,35 @@ class ChivalryCombatGame {
                 this.aiPlayer.isBlocking = false;
             }
         }
+    }
+
+
+    startGame() {
+        this.gameState.gameStarted = true;
+        const startButton = document.getElementById('startButton');
+        if (startButton) {
+            startButton.remove();
+        }
+
+        // Reset positions to ground level
+        this.gameState.playerPos = { x: 600, y: 600 };
+        this.aiPlayer.x = 800;
+        this.aiPlayer.y = 600;
+        this.aiPlayer.targetPos = { x: 800, y: 600 };
+
+        // Reset stats
+        this.gameState.health = 150;
+        this.gameState.stamina = 100;
+        this.aiPlayer.health = 150;
+        this.aiPlayer.stamina = 100;
+        this.gameState.kills = 0;
+        this.gameState.deaths = 0;
+        this.gameState.comboCount = 0;
+        this.killsInARow = 0;
+        this.updateHUD();
+
+        // Add restart button
+        this.addRestartButton();
     }
 
     updateHUD() {
