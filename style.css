@@ -141,19 +141,25 @@ body {
 
 .bottom-hud {
     position: absolute;
+    left: 0;
+    /* fill the wrap horizontally */
+    right: 0;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* 20px up from the bottom of the canvas */
     z-index: 10;
 }
 
 .health-stamina-container {
+    width: 100%;
+    /* == canvas CSS width */
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 12px;
+    /* spacing between pieces */
+    padding: 0 12px;
+    /* small side padding */
+    box-sizing: border-box;
     justify-content: center;
-    flex-wrap: nowrap;
-    /* allows wrap on smaller screens */
 }
 
 /* Ensure the order stays Health → Indicator → Stamina, even when wrapped */
@@ -169,39 +175,38 @@ body {
     order: 3;
 }
 
-/* (Optional) make bars flexible so the indicator fits comfortably */
-.health-bar,
-.stamina-bar {
-    width: clamp(200px, 22vw, 250px);
-}
-
 
 .health-bar,
 .stamina-bar {
-    width: 250px;
+    width: min(30%, 250px);
+    box-sizing: border-box;
+    /* include border in that 250px cap */
     height: 30px;
     background: rgba(0, 0, 0, 0.8);
     border: 3px solid #8b4513;
-    border-radius: 20px;
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
 }
 
+.health-fill,
+.stamina-fill {
+    position: absolute;
+    inset: 0;
+    width: calc(var(--pct, 1) * 100%);
+    /* 0 → 1 */
+    transition: width 180ms linear;
+}
+
+/* Colors for fills */
 .health-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #e74c3c, #c0392b);
-    width: 100%;
-    transition: width 0.3s ease;
-    border-radius: 13px;
+    background: linear-gradient(90deg, #ff4d4d, #b30000);
 }
 
 .stamina-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f39c12, #e67e22);
-    width: 100%;
-    transition: width 0.3s ease;
-    border-radius: 13px;
+    background: linear-gradient(90deg, #3c91ff, #9ad0ff);
 }
+
 
 .health-text,
 .stamina-text {
@@ -209,25 +214,28 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    pointer-events: none;
 }
 
 .attack-indicator {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
-    border: 3px solid #8b4513;
-    border-radius: 15px;
-    padding: 12px 25px;
-    font-weight: bold;
-    text-align: center;
-    transition: all 0.3s ease;
-    box-shadow:
-        0 0 20px rgba(139, 69, 19, 0.4),
-        inset 0 0 10px rgba(255, 255, 255, 0.1);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    padding: 8px 16px;
-    min-width: 120px;
+  /* width = min(20% of canvas, 100px), and don’t grow/shrink */
+  flex: 0 0 min(20%, 100px);
+  width: min(20%, 120px);
+  box-sizing: border-box;
+
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  padding: 4px 8px;
+  border-radius: 15px;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid #8b4513;
 }
 
 .attack-indicator.slashing {
@@ -271,14 +279,15 @@ body {
     background: #f39c12;
     color: #fff;
     border: none;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 10px 10px;
     padding: 10px 24px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: background 0.2s;
 }
+
 .controls-toggle-btn:hover {
     background: #e67e22;
 }
@@ -302,6 +311,7 @@ body {
     animation: dropdownFadeIn 0.2s;
     box-sizing: border-box;
 }
+
 .controls-info.controls-dropdown-panel.open {
     display: block;
 }
@@ -312,6 +322,7 @@ body {
     gap: 0.5em;
     width: 100%;
 }
+
 .control-row {
     display: flex;
     justify-content: space-between;
@@ -320,6 +331,7 @@ body {
     font-size: 1.05em;
     width: 100%;
 }
+
 .control-key {
     background: #f39c12;
     color: #fff;
@@ -329,10 +341,11 @@ body {
     font-size: 1em;
     min-width: 80px;
     text-align: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     margin-right: 0.5em;
     flex-shrink: 0;
 }
+
 .control-action {
     color: #fff;
     font-size: 1em;
@@ -342,8 +355,15 @@ body {
 }
 
 @keyframes dropdownFadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .controls-info h3 {
