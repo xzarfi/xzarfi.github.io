@@ -9,8 +9,6 @@
 </head>
 
 <body>
-
-
     <div class="game-container">
         <div class="canvas-wrap">
             <!-- Top HUD -->
@@ -41,12 +39,18 @@
                     <div class="controls-info controls-dropdown-panel" id="controlsDropdownPanel">
                         <h3>Controls</h3>
                         <div class="controls-list">
-                            <div class="control-row"><span class="control-key">LMB</span><span class="control-action">Slash</span></div>
-                            <div class="control-row"><span class="control-key">Scroll Down</span><span class="control-action">Overhead</span></div>
-                            <div class="control-row"><span class="control-key">MB4 (Back)</span><span class="control-action">Feint</span></div>
-                            <div class="control-row"><span class="control-key">MB5 (Front)</span><span class="control-action">Stab</span></div>
-                            <div class="control-row"><span class="control-key">RMB</span><span class="control-action">Block</span></div>
-                            <div class="control-row"><span class="control-key">WASD</span><span class="control-action">Move</span></div>
+                            <div class="control-row"><span class="control-key">LMB</span><span class="control-action">Slash</span>
+                            </div>
+                            <div class="control-row"><span class="control-key">Scroll Down</span><span class="control-action">Overhead</span>
+                            </div>
+                            <div class="control-row"><span class="control-key">MB4 (Back)</span><span class="control-action">Feint</span>
+                            </div>
+                            <div class="control-row"><span class="control-key">MB5 (Front)</span><span class="control-action">Stab</span>
+                            </div>
+                            <div class="control-row"><span class="control-key">RMB</span><span class="control-action">Block</span>
+                            </div>
+                            <div class="control-row"><span class="control-key">WASD</span><span class="control-action">Move</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,13 +77,15 @@
             </div>
 
         </div>
-
-    <!-- Controls moved inside .canvas-wrap as dropdown -->
+        <div id="controls" style="display:flex;align-items:center;gap:10px;">
+            <!-- Controls moved inside .canvas-wrap as dropdown -->
+            <button id="muteBtn" style="font-size:1.2em;">🔊</button>
+        </div>
     </div>
-    
+    <audio id="introMusic" src="intromusic.mp3" loop></audio>
+    <audio id="bgMusic" src="bgmusic.mp3" loop></audio>
     <script src="resizeCanvas.js"></script>
     <script src="game.js"></script>
-    
     <script>
     // Controls dropdown toggle logic
     const controlsBtn = document.getElementById('controlsToggleBtn');
@@ -100,6 +106,31 @@
             window.location.reload();
         });
     }
+    // --- Play intro music on first user interaction ---
+    window.addEventListener('DOMContentLoaded', function() {
+        const introMusic = document.getElementById('introMusic');
+        const bgMusic = document.getElementById('bgMusic');
+        const muteBtn = document.getElementById('muteBtn');
+        let isMuted = false;
+        function updateMuteIcon() {
+            muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        }
+        function setMute(mute) {
+            isMuted = mute;
+            introMusic.muted = mute;
+            bgMusic.muted = mute;
+            updateMuteIcon();
+        }
+        muteBtn.addEventListener('click', function() {
+            if (introMusic.paused && !isMuted) {
+                introMusic.play();
+            }
+            setMute(!isMuted);
+        });
+        setMute(false); // default to unmuted
+        updateMuteIcon();
+        introMusic.play().catch(() => {});
+    });
     </script>
 </body>
 

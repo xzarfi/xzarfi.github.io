@@ -139,6 +139,8 @@ class ChivalryCombatGame {
         this.setupEventListeners();
         this.setupStartButton();
         this.gameLoop();
+        this.introMusic = document.getElementById('introMusic');
+        this.bgMusic = document.getElementById('bgMusic');
     }
 
     setupEventListeners() {
@@ -817,7 +819,13 @@ class ChivalryCombatGame {
 
     startGame() {
         this.gameState.mode = 'playing';
-
+        // Pause intro music and play bg music
+        if (this.introMusic && !this.introMusic.paused) {
+            this.introMusic.pause();
+        }
+        if (this.bgMusic && this.bgMusic.paused) {
+            this.bgMusic.play();
+        }
         // hide the start button once the game begins
         const btn = document.getElementById('startButton');
         if (btn) btn.remove();
