@@ -259,6 +259,7 @@ class ChivalryCombatGame {
         this.gameState.kills = 0;
         this.gameState.deaths = 0;
         this.gameState.comboCount = 0;
+        this.killsInARow = 0;
         this.updateHUD();
 
         // Add restart button
@@ -344,6 +345,8 @@ class ChivalryCombatGame {
     }
 
     canPerformAttack() {
+        // Prevent attacking while dead or during respawn invulnerability
+        if (this.gameState.isDead || this.gameState.respawnInvulnerability > 0) return false;
         return !this.gameState.isAttacking &&
             this.gameState.stamina >= 10 &&
             Date.now() - this.gameState.lastAttackTime > this.gameState.recoveryTime;
@@ -461,8 +464,9 @@ class ChivalryCombatGame {
             // Track kills in a row for victory
             if (typeof this.killsInARow !== 'number') this.killsInARow = 0;
             this.killsInARow++;
-            // Refill player health after each kill
+            // Refill player health and stamina after each kill
             this.gameState.health = 150;
+            this.gameState.stamina = 100;
             this.addDeathEffect(this.aiPlayer.x, this.aiPlayer.y, 'ai');
             this.checkVictory();
         }
