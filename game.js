@@ -55,11 +55,11 @@ class ChivalryCombatGame {
             respawnTime: 3000,
             kills: 0,
             deaths: 0,
-            gameStarted: false, // New: track if game has started
             respawnInvulnerability: 0, // New: invulnerability after respawn
             comboCount: 0, // New: combo system
             lastComboTime: 0, // New: combo timing
-            comboWindow: 2000 // New: combo window in ms
+            comboWindow: 2000, // New: combo window in ms
+            mode: 'menu' // 'menu' | 'playing' | 'victory'
         };
 
         // Combat system - Realistic Chivalry 2 values
@@ -238,35 +238,6 @@ class ChivalryCombatGame {
         document.body.appendChild(startButton);
     }
 
-    startGame() {
-        this.gameState.gameStarted = true;
-        const startButton = document.getElementById('startButton');
-        if (startButton) {
-            startButton.remove();
-        }
-
-        // Reset positions to ground level
-        this.gameState.playerPos = { x: 600, y: 600 };
-        this.aiPlayer.x = 800;
-        this.aiPlayer.y = 600;
-        this.aiPlayer.targetPos = { x: 800, y: 600 };
-
-        // Reset stats
-        this.gameState.health = 150;
-        this.gameState.stamina = 100;
-        this.aiPlayer.health = 150;
-        this.aiPlayer.stamina = 100;
-        this.gameState.kills = 0;
-        this.gameState.deaths = 0;
-        this.gameState.comboCount = 0;
-        this.killsInARow = 0;
-        this.updateHUD();
-
-        // Add restart button
-        this.addRestartButton();
-    }
-
-
     addRestartButton() {
         // No longer needed: restart button is now in HTML, but we hide it until victory
         const restartButton = document.getElementById('restartButton');
@@ -292,11 +263,8 @@ class ChivalryCombatGame {
         // Show overlay
         const overlay = document.getElementById('victoryOverlay');
         if (overlay) overlay.style.display = 'flex';
-        // Hide restart button in top right
-        const restartButton = document.getElementById('restartButton');
-        if (restartButton) restartButton.style.display = 'none';
-        // Pause game logic
-        this.gameState.gameStarted = false;
+        this.gameState.mode = 'victory';
+
     }
 
     handleSlash() {
@@ -320,6 +288,7 @@ class ChivalryCombatGame {
     }
 
     handleBlock() {
+        if (!this.isPlaying()) return;
         if (this.gameState.stamina >= this.combatSystem.staminaCost.block && !this.gameState.isAttacking) {
             this.gameState.isBlocking = true;
             this.gameState.blockStartTime = Date.now();
@@ -335,6 +304,7 @@ class ChivalryCombatGame {
     }
 
     handleFeint() {
+        if (!this.isPlaying()) return;
         if (this.gameState.stamina >= this.combatSystem.staminaCost.feint && !this.gameState.isAttacking) {
             this.gameState.isFeinting = true;
             this.gameState.feintStartTime = Date.now();
@@ -345,8 +315,10 @@ class ChivalryCombatGame {
         }
     }
 
+    isPlaying() { return this.gameState.mode === 'playing'; }
+
     canPerformAttack() {
-        // Prevent attacking while dead or during respawn invulnerability
+        if (!this.isPlaying()) return false;                     // ← one clean gate
         if (this.gameState.isDead || this.gameState.respawnInvulnerability > 0) return false;
         return !this.gameState.isAttacking &&
             this.gameState.stamina >= 10 &&
@@ -476,10 +448,7 @@ class ChivalryCombatGame {
                     this.respawnAI();
                 }, this.aiPlayer.respawnTime);
             }
-
         }
-
-
     }
 
     respawnAI() {
@@ -627,6 +596,7 @@ class ChivalryCombatGame {
     }
 
     updatePlayerMovement() {
+        if (!this.isPlaying()) return;
         const keys = this.gameState.keys;
         let dx = 0;
         let dy = 0;
@@ -660,6 +630,7 @@ class ChivalryCombatGame {
     }
 
     updateAIMovement() {
+        if (!this.isPlaying()) return;
         if (!this.aiPlayer.isAlive) return;
 
         // If player is dead or invulnerable, AI idles (does not track or attack)
@@ -808,6 +779,7 @@ class ChivalryCombatGame {
     }
 
     updateStamina() {
+        if (!this.isPlaying()) return;
         // Realistic Chivalry 2 stamina regen
         if (this.gameState.stamina < 100) {
             this.gameState.stamina += 0.3; // Slower regen
@@ -847,11 +819,11 @@ class ChivalryCombatGame {
 
 
     startGame() {
-        this.gameState.gameStarted = true;
-        const startButton = document.getElementById('startButton');
-        if (startButton) {
-            startButton.remove();
-        }
+        this.gameState.mode = 'playing';
+
+        // hide the start button once the game begins
+        const btn = document.getElementById('startButton');
+        if (btn) btn.remove();
 
         // Reset positions to ground level
         this.gameState.playerPos = { x: 600, y: 600 };
@@ -924,6 +896,9 @@ class ChivalryCombatGame {
     }
 
     updateEffects() {
+        // keep visual-only things (like menu sparkles) always allowed if you add them
+        if (!this.isPlaying()) { /* update menu-only effects if any */ return; }
+
         const currentTime = Date.now();
 
         // Update weapon trails
@@ -1004,49 +979,6 @@ class ChivalryCombatGame {
         }
     }
 
-    render() {
-        // Clear in device pixels with identity transform, then restore
-        this.ctx.save();
-        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.restore();
-
-        // Apply screen shake
-        if (this.effects.screenShake > 0) {
-            const shakeX = (Math.random() - 0.5) * this.effects.screenShake;
-            const shakeY = (Math.random() - 0.5) * this.effects.screenShake;
-            this.ctx.save();
-            this.ctx.translate(shakeX, shakeY);
-        }
-
-        // Draw background elements
-        this.drawBackground();
-
-        if (this.gameState.gameStarted) {
-            // Draw AI player
-            this.drawAIPlayer();
-
-            // Draw player
-            this.drawPlayer();
-
-            // Draw weapon trails
-            this.drawWeaponTrails();
-
-            // Draw combat effects
-            this.drawCombatEffects();
-
-            // Draw death effects
-            this.drawDeathEffects();
-        } else {
-            // Draw start screen
-            this.drawStartScreen();
-        }
-
-        // Restore canvas if screen shake was applied
-        if (this.effects.screenShake > 0) {
-            this.ctx.restore();
-        }
-    }
 
     drawStartScreen() {
         // Draw title with epic styling
@@ -1732,13 +1664,74 @@ class ChivalryCombatGame {
     }
 
     gameLoop() {
-        if (this.gameState.gameStarted) {
-            this.updatePlayerMovement();
-            this.updateStamina();
-            this.updateEffects();
-        }
-        this.render();
+        const now = performance.now();
+        const dt = this._lastNow ? Math.min(32, now - this._lastNow) : 16; // clamp dt
+        this._lastNow = now;
+
+        this.updateByMode(dt);
+        this.renderByMode();
+
         requestAnimationFrame(() => this.gameLoop());
+    }
+
+    updateByMode(dt) {
+        switch (this.gameState.mode) {
+            case 'menu':
+                this.updateMenu(dt);        // purely visual (clouds, pulsing title, etc.)
+                break;
+            case 'playing':
+                this.updateStamina();
+                this.updatePlayerMovement();
+                this.updateEffects();
+                break;
+            case 'victory':
+                this.updateVictory(dt);     // small shimmer/particles if you want
+                break;
+        }
+    }
+
+    updateMenu(dt) {
+        // (optional) animate clouds, pulse title, etc.
+    }
+
+    updateVictory(dt) {
+        // (optional) little shimmer/particles while overlay is up
+    }
+
+    renderByMode() {
+        // clear done already in your render(); we’ll split responsibilities
+        this.ctx.save();
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.restore();
+
+        if (this.effects.screenShake > 0) {
+            const shakeX = (Math.random() - 0.5) * this.effects.screenShake;
+            const shakeY = (Math.random() - 0.5) * this.effects.screenShake;
+            this.ctx.save();
+            this.ctx.translate(shakeX, shakeY);
+        }
+
+        // Background stays the same for all modes
+        this.drawBackground();
+
+        switch (this.gameState.mode) {
+            case 'menu':
+                this.drawStartScreen();     // you already have this:contentReference[oaicite:2]{index=2}
+                break;
+            case 'playing':
+                this.drawAIPlayer();
+                this.drawPlayer();
+                this.drawWeaponTrails();
+                this.drawCombatEffects();
+                this.drawDeathEffects();
+                break;
+            case 'victory':
+                // draw whatever you want under your overlay
+                break;
+        }
+
+        if (this.effects.screenShake > 0) this.ctx.restore();
     }
 }
 
