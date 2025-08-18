@@ -100,8 +100,7 @@ class ChivalryCombatGame {
         this.effects = {
             weaponTrails: [],
             combatEffects: [],
-            deathEffects: [],
-            screenShake: 0
+            deathEffects: []
         };
 
         // AI Player
@@ -325,7 +324,7 @@ class ChivalryCombatGame {
             this.gameState.blockStartTime = Date.now();
             this.gameState.blockAngle = this.gameState.weaponAngle;
             this.showAttackIndicator('Blocking');
-            this.addScreenShake(1);
+            // screen shake removed
         }
     }
 
@@ -341,7 +340,7 @@ class ChivalryCombatGame {
             this.gameState.stamina -= this.combatSystem.staminaCost.feint;
             this.updateHUD();
             this.showAttackIndicator('Feinting');
-            this.addScreenShake(2);
+            // screen shake removed
         }
     }
 
@@ -368,9 +367,9 @@ class ChivalryCombatGame {
         this.gameState.attackSwingDirection = 1;
         this.gameState.stamina -= this.combatSystem.staminaCost[attackType];
 
-        this.showAttackIndicator(this.getAttackName(attackType));
-        this.addWeaponTrail();
-        this.addScreenShake(3);
+    this.showAttackIndicator(this.getAttackName(attackType));
+    this.addWeaponTrail();
+    // screen shake removed
 
         // Check for hits
         this.checkHits(attackType);
@@ -579,13 +578,13 @@ class ChivalryCombatGame {
         if (target === 'ai') {
             this.aiPlayer.stamina -= this.combatSystem.staminaCost.block;
             this.addCombatEffect(this.aiPlayer.x, this.aiPlayer.y, 0, 'block');
-            this.addScreenShake(2);
+            // screen shake removed
         } else {
             this.gameState.stamina -= this.combatSystem.staminaCost.block;
             this.gameState.lastHitTime = Date.now();
             this.gameState.hitStun = 200;
             this.addCombatEffect(this.gameState.playerPos.x, this.gameState.playerPos.y, 0, 'block');
-            this.addScreenShake(2);
+            // screen shake removed
             this.updateHUD();
         }
     }
@@ -622,9 +621,7 @@ class ChivalryCombatGame {
         this.effects.deathEffects.push(effect);
     }
 
-    addScreenShake(intensity) {
-        this.effects.screenShake = intensity;
-    }
+    // screen shake removed
 
     updatePlayerMovement() {
         const keys = this.gameState.keys;
@@ -792,9 +789,9 @@ class ChivalryCombatGame {
         this.gameState.lastHitTime = Date.now();
         this.gameState.hitStun = 300;
 
-        // Add combat effect on player
-        this.addCombatEffect(this.gameState.playerPos.x, this.gameState.playerPos.y, damage, 'hit');
-        this.addScreenShake(2);
+    // Add combat effect on player
+    this.addCombatEffect(this.gameState.playerPos.x, this.gameState.playerPos.y, damage, 'hit');
+    // screen shake removed
 
         if (this.gameState.health <= 0) {
             this.gameState.isDead = true;
@@ -941,11 +938,7 @@ class ChivalryCombatGame {
             currentTime - effect.startTime < 2000
         );
 
-        // Update screen shake
-        if (this.effects.screenShake > 0) {
-            this.effects.screenShake -= 0.5;
-            if (this.effects.screenShake < 0) this.effects.screenShake = 0;
-        }
+    // screen shake removed
 
         // Update feint state
         if (this.gameState.isFeinting && currentTime - this.gameState.feintStartTime > this.gameState.feintTime) {
@@ -1011,13 +1004,7 @@ class ChivalryCombatGame {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.restore();
 
-        // Apply screen shake
-        if (this.effects.screenShake > 0) {
-            const shakeX = (Math.random() - 0.5) * this.effects.screenShake;
-            const shakeY = (Math.random() - 0.5) * this.effects.screenShake;
-            this.ctx.save();
-            this.ctx.translate(shakeX, shakeY);
-        }
+    // screen shake removed
 
         // Draw background elements
         this.drawBackground();
@@ -1042,10 +1029,7 @@ class ChivalryCombatGame {
             this.drawStartScreen();
         }
 
-        // Restore canvas if screen shake was applied
-        if (this.effects.screenShake > 0) {
-            this.ctx.restore();
-        }
+    // canvas state restored (no screen shake)
     }
 
     drawStartScreen() {
