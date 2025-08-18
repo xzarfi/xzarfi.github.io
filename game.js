@@ -265,39 +265,36 @@ class ChivalryCombatGame {
         this.addRestartButton();
     }
 
+
     addRestartButton() {
-    // No longer needed: restart button is now in HTML
-    // This function is kept for compatibility but does nothing
+        // No longer needed: restart button is now in HTML, but we hide it until victory
+        const restartButton = document.getElementById('restartButton');
+        if (restartButton) {
+            restartButton.style.display = 'none';
+        }
     }
 
     restartGame() {
-        // Reset game state
-        this.gameState.gameStarted = false;
-        this.gameState.health = 150;
-        this.gameState.stamina = 100;
-        this.gameState.kills = 0;
-        this.gameState.deaths = 0;
-        this.gameState.comboCount = 0;
-        this.gameState.isDead = false;
-
-        // Reset AI
-        this.aiPlayer.health = 150;
-        this.aiPlayer.stamina = 100;
-        this.aiPlayer.isAlive = true;
-        this.aiPlayer.isDead = false;
-        this.aiPlayer.speed = 2;
-        this.aiPlayer.attackCooldown = 2000;
-        this.aiPlayer.attackRange = 80;
-
-        // Remove restart button
-        const restartButton = document.getElementById('restartButton');
-        if (restartButton) {
-            restartButton.remove();
+        window.location.reload();
+    }
+    // --- WIN CONDITION ---
+    checkVictory() {
+        // Player wins if 5 kills without dying
+        if (this.gameState.kills >= 5 && this.gameState.deaths === 0 && !this.victoryShown) {
+            this.showVictory();
         }
+    }
 
-        // Show start screen again
-        this.setupStartButton();
-        this.updateHUD();
+    showVictory() {
+        this.victoryShown = true;
+        // Show overlay
+        const overlay = document.getElementById('victoryOverlay');
+        if (overlay) overlay.style.display = 'flex';
+        // Hide restart button in top right
+        const restartButton = document.getElementById('restartButton');
+        if (restartButton) restartButton.style.display = 'none';
+        // Pause game logic
+        this.gameState.gameStarted = false;
     }
 
     handleSlash() {
@@ -462,12 +459,15 @@ class ChivalryCombatGame {
             this.aiPlayer.health = 0;
             this.gameState.kills++;
             this.addDeathEffect(this.aiPlayer.x, this.aiPlayer.y, 'ai');
+            this.checkVictory();
         }
 
-        // Respawn AI after respawn time with proper spacing
-        setTimeout(() => {
-            this.respawnAI();
-        }, this.aiPlayer.respawnTime);
+        // Only respawn AI if not victory
+        if (!this.victoryShown) {
+            setTimeout(() => {
+                this.respawnAI();
+            }, this.aiPlayer.respawnTime);
+        }
     }
 
     respawnAI() {
@@ -519,6 +519,8 @@ class ChivalryCombatGame {
     }
 
     respawnPlayer() {
+        // Only allow respawn if not victory
+        if (this.victoryShown) return;
         // Find a safe respawn position away from AI
         const aiPos = { x: this.aiPlayer.x, y: this.aiPlayer.y };
         let respawnX, respawnY;

@@ -36,7 +36,6 @@
             </div>
             <!-- Top right controls: restart + controls dropdown (moved outside HUD) -->
             <div class="top-right-controls">
-                <button id="restartButton" class="restart-button">RESTART</button>
                 <div class="controls-dropdown">
                     <button id="controlsToggleBtn" class="controls-toggle-btn">Controls</button>
                     <div class="controls-info controls-dropdown-panel" id="controlsDropdownPanel">
@@ -50,6 +49,12 @@
                             <div class="control-row"><span class="control-key">WASD</span><span class="control-action">Move</span></div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div id="victoryOverlay" class="victory-overlay" style="display:none;">
+                <div class="victory-message">
+                    <h1>🎉 You are victorious! 🎉</h1>
+                    <button id="playAgainButton" class="restart-button">Play Again</button>
                 </div>
             </div>
             <canvas id="gameCanvas" width="1200" height="800"></canvas>
@@ -87,12 +92,13 @@
             controlsPanel.classList.remove('open');
         }
     });
-    // Restart button logic
-    document.getElementById('restartButton').addEventListener('click', function() {
-        if (window.chivalryGame && typeof window.chivalryGame.restartGame === 'function') {
-            window.chivalryGame.restartGame();
-        }
-    });
+    // Play Again button logic (victory)
+    const playAgainBtn = document.getElementById('playAgainButton');
+    if (playAgainBtn) {
+        playAgainBtn.addEventListener('click', function() {
+            window.location.reload();
+        });
+    }
     </script>
 </body>
 
