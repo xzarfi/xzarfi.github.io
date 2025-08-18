@@ -278,6 +278,7 @@ class ChivalryCombatGame {
     restartGame() {
         window.location.reload();
     }
+
     // --- WIN CONDITION ---
     checkVictory() {
         // Player wins if 3 kills without dying
@@ -469,14 +470,16 @@ class ChivalryCombatGame {
             this.gameState.stamina = 100;
             this.addDeathEffect(this.aiPlayer.x, this.aiPlayer.y, 'ai');
             this.checkVictory();
+            // Only respawn AI if not victory
+            if (!this.victoryShown) {
+                setTimeout(() => {
+                    this.respawnAI();
+                }, this.aiPlayer.respawnTime);
+            }
+
         }
 
-        // Only respawn AI if not victory
-        if (!this.victoryShown) {
-            setTimeout(() => {
-                this.respawnAI();
-            }, this.aiPlayer.respawnTime);
-        }
+
     }
 
     respawnAI() {
@@ -644,7 +647,7 @@ class ChivalryCombatGame {
 
         // Keep player in bounds
         this.gameState.playerPos.x = Math.max(50, Math.min(this.W - 50, this.gameState.playerPos.x));
-        this.gameState.playerPos.y = Math.max(50 + this.H*0.6, Math.min(this.H - 50, this.gameState.playerPos.y));
+        this.gameState.playerPos.y = Math.max(50 + this.H * 0.6, Math.min(this.H - 50, this.gameState.playerPos.y));
 
         // Update weapon angle
         this.gameState.weaponAngle = Math.atan2(
