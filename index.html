@@ -33,19 +33,22 @@
                         <span class="score-value" id="difficultyDisplay">1</span>
                     </div>
                 </div>
-            </div>
-            <!-- Controls Dropdown Button and Panel -->
-            <div class="controls-dropdown">
-                <button id="controlsToggleBtn" class="controls-toggle-btn">Controls</button>
-                <div class="controls-info controls-dropdown-panel" id="controlsDropdownPanel">
-                    <h3>Controls</h3>
-                    <div class="controls-list">
-                        <div class="control-row"><span class="control-key">LMB</span><span class="control-action">Slash</span></div>
-                        <div class="control-row"><span class="control-key">Scroll Down</span><span class="control-action">Overhead</span></div>
-                        <div class="control-row"><span class="control-key">MB4 (Back)</span><span class="control-action">Feint</span></div>
-                        <div class="control-row"><span class="control-key">MB5 (Front)</span><span class="control-action">Stab</span></div>
-                        <div class="control-row"><span class="control-key">RMB</span><span class="control-action">Block</span></div>
-                        <div class="control-row"><span class="control-key">WASD</span><span class="control-action">Move</span></div>
+                <!-- Top right controls: restart + controls dropdown -->
+                <div class="top-right-controls">
+                    <button id="restartButton" class="restart-button">RESTART</button>
+                    <div class="controls-dropdown">
+                        <button id="controlsToggleBtn" class="controls-toggle-btn">Controls</button>
+                        <div class="controls-info controls-dropdown-panel" id="controlsDropdownPanel">
+                            <h3>Controls</h3>
+                            <div class="controls-list">
+                                <div class="control-row"><span class="control-key">LMB</span><span class="control-action">Slash</span></div>
+                                <div class="control-row"><span class="control-key">Scroll Down</span><span class="control-action">Overhead</span></div>
+                                <div class="control-row"><span class="control-key">MB4 (Back)</span><span class="control-action">Feint</span></div>
+                                <div class="control-row"><span class="control-key">MB5 (Front)</span><span class="control-action">Stab</span></div>
+                                <div class="control-row"><span class="control-key">RMB</span><span class="control-action">Block</span></div>
+                                <div class="control-row"><span class="control-key">WASD</span><span class="control-action">Move</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,6 +85,12 @@
     document.addEventListener('click', (e) => {
         if (!controlsPanel.contains(e.target) && e.target !== controlsBtn) {
             controlsPanel.classList.remove('open');
+        }
+    });
+    // Restart button logic
+    document.getElementById('restartButton').addEventListener('click', function() {
+        if (window.chivalryGame && typeof window.chivalryGame.restartGame === 'function') {
+            window.chivalryGame.restartGame();
         }
     });
     </script>
